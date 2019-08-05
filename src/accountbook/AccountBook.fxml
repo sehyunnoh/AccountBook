@@ -116,7 +116,7 @@
         <right>
             <VBox prefHeight="352.0" prefWidth="363.0" BorderPane.alignment="CENTER">
                 <children>
-                    <Label prefHeight="18.0" prefWidth="168.0" text="OutCome" />
+                    <Label prefHeight="18.0" prefWidth="168.0" text="Daily OutCome" />
                     <TableView fx:id="tvOutCome" prefHeight="200.0" prefWidth="200.0">
                         <columns>
                             <TableColumn fx:id="tcONo" prefWidth="47.999998450279236" text="No" />
@@ -126,7 +126,7 @@
                             <TableColumn fx:id="tcOAmt" prefWidth="91.9998779296875" text="Amount" />
                         </columns>
                     </TableView>
-                    <Label prefHeight="18.0" prefWidth="165.0" text="InCome" />
+                    <Label prefHeight="18.0" prefWidth="165.0" text="Daily InCome" />
                     <TableView fx:id="tvInCome" prefHeight="200.0" prefWidth="200.0">
                         <columns>
                             <TableColumn fx:id="tcINo" prefWidth="47.999998450279236" text="No" />
@@ -149,7 +149,7 @@
                 <children>
                     <HBox prefHeight="32.0" prefWidth="675.0">
                         <children>
-                            <Label prefHeight="18.0" prefWidth="155.0" text="Transaction History" />
+                            <Label prefHeight="18.0" prefWidth="227.0" text="Monthly Transaction History" />
                             <TextField fx:id="txtMdesc" promptText="Description" />
                             <Button defaultButton="true" mnemonicParsing="true" onAction="#btnMSearch" text="Searc_h" />
                             <Button mnemonicParsing="true" onAction="#btnMRefresh" text="Re_fresh" />

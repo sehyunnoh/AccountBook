@@ -7,15 +7,21 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 
 public class AccountBookController implements Initializable {
 
@@ -33,10 +39,11 @@ public class AccountBookController implements Initializable {
     private ArrayList<String> typeList;
     private ArrayList<String> pMethodList;
     private ArrayList<Month> alMonth;
+    private int monthchanged;
 
     @FXML
     private Label lblSBalance, lblNBalance;
-    
+
     @FXML
     private DatePicker datePicker;
 
@@ -87,20 +94,46 @@ public class AccountBookController implements Initializable {
         category = cmbCategory.getSelectionModel().getSelectedItem();
         desc = txtDesc.getText();
         pMethod = ((RadioButton) grpPayMethod.getSelectedToggle()).getText();
-        amt = Double.parseDouble(txtAmt.getText());
         pMethodDetail = cmbPayMethod.getSelectionModel().getSelectedItem();
 
-        File file = new File(makePath(date));
-        FileWriter fw = new FileWriter(file, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(fw);
+        boolean check = true;
+        String erroMsg = "";
 
-        pw.print(makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt));
-        pw.close();
+        try {
+            amt = Double.parseDouble(txtAmt.getText());
+        } catch (Exception e) {
+            erroMsg = "Amount field is accepted the only number";
+            check = false; 
+        }
 
-        refresh();
-        displayDay(date);
-        displayMonth(date);
+        if ("".equals(desc) || "".equals(txtAmt.getText())) {
+            erroMsg = "Empty field is not accepted";
+            check = false;
+        } else if (!desc.matches("[a-zA-Z0-9]+")) {
+            erroMsg = "Only letters and numbers are allowed.";
+            check = false;
+        }
+
+        if (!check) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Data Entry Error");
+            alert.setHeaderText("Invalid Value Entered");
+            alert.setContentText(erroMsg);
+            alert.showAndWait();
+        } else {
+            File file = new File(makePath(date));
+            FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(fw);
+
+            pw.print(makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt));
+            pw.close();
+
+            refresh();
+            displayDay(date);
+            displayMonth(date);
+        }
+
     }
 
     @FXML
@@ -163,16 +196,19 @@ public class AccountBookController implements Initializable {
         }
 
         displayMonthFromArray(tmp);
+        monthchanged++;
     }
 
     @FXML
     private void btnMDelete(ActionEvent event) {
         tvMonth.getItems().removeAll(tvMonth.getSelectionModel().getSelectedItem());
+        monthchanged++;
     }
 
     @FXML
     private void btnMDeleteAll(ActionEvent event) {
         tvMonth.getItems().clear();
+        monthchanged++;
     }
 
     @FXML
@@ -186,7 +222,29 @@ public class AccountBookController implements Initializable {
     }
 
     @FXML
-    private void btnMReport(ActionEvent event) {
+    private void btnMReport(ActionEvent event) throws IOException {
+
+        if (monthchanged > 0) {
+
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
+                    "Do you want to save your changes?", ButtonType.YES, ButtonType.NO);
+            alert.setTitle("Alert");
+            alert.setHeaderText(null);
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if (result.get() == ButtonType.YES) {
+                btnMSave(new ActionEvent());
+            }
+
+        }
+
+        Parent reportParent = FXMLLoader.load(getClass().getResource("Report.fxml"));
+        Scene reportScene = new Scene(reportParent);
+        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        window.setScene(reportScene);
+        window.show();
+
     }
 
     @FXML
@@ -195,7 +253,7 @@ public class AccountBookController implements Initializable {
         PrintWriter writer = new PrintWriter(makePath(date));
         writer.print("");
         writer.close();
-        
+
         File file = new File(makePath(date));
         FileWriter fw = new FileWriter(file, true);
         BufferedWriter bw = new BufferedWriter(fw);
@@ -237,7 +295,7 @@ public class AccountBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblSBalance.setText(""+startBalance);
+        lblSBalance.setText("" + startBalance);
         datePicker.setValue(LocalDate.now());
         typeList = new ArrayList();
         btnOutcomeAction(new ActionEvent());
@@ -423,12 +481,13 @@ public class AccountBookController implements Initializable {
             tcMBal.setCellValueFactory(new PropertyValueFactory<Month, Double>("balance"));
 
             tvMonth.setItems(olMonth);
-            lblNBalance.setText(""+balance);
+            lblNBalance.setText("" + balance);
+            monthchanged = 0;
         }
     }
 
     public void displayMonthFromArray(ArrayList<Month> al) throws IOException {
-        
+
         ObservableList<Month> olMonth = FXCollections.observableArrayList(al);
         tcMNo.setCellValueFactory(new PropertyValueFactory<Month, Integer>("no"));
         tcMDate.setCellValueFactory(new PropertyValueFactory<Month, String>("date"));
