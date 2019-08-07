@@ -7,13 +7,13 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 public class AccountBook extends Application {
-    
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("AccountBook.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("view/Start.fxml"));
         stage.setTitle("Account Book");
         Scene scene = new Scene(root);
-        
+
         stage.setScene(scene);
         stage.show();
     }
@@ -21,5 +21,5 @@ public class AccountBook extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }

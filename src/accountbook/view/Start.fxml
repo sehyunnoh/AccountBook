@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="accountbook.StartController">
+   <children>
+      <Label fx:id="lblName" layoutX="54.0" layoutY="224.0" prefHeight="18.0" prefWidth="225.0" text="Welcome " />
+      <ImageView fx:id="profileImg" fitHeight="150.0" fitWidth="200.0" layoutX="67.0" layoutY="37.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="lblBalance" layoutX="120.0" layoutY="274.0" text="\$ " />
+      <Label layoutX="394.0" layoutY="248.0" text="Name : " />
+      <Label layoutX="394.0" layoutY="283.0" text="Balance : " />
+      <TextField fx:id="txtName" layoutX="454.0" layoutY="244.0" prefHeight="26.0" prefWidth="114.0" />
+      <TextField fx:id="txtBalance" layoutX="454.0" layoutY="287.0" prefHeight="26.0" prefWidth="114.0" />
+      <Button defaultButton="true" layoutX="393.0" layoutY="332.0" mnemonicParsing="false" onAction="#btnStart" prefHeight="26.0" prefWidth="174.0" text="Start" />
+      <Button fx:id="btnImgChange" layoutX="454.0" layoutY="207.0" mnemonicParsing="false" onAction="#btnImgChange" prefHeight="26.0" prefWidth="114.0" text="Image change" />
+   </children>
+</AnchorPane>

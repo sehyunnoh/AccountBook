@@ -6,28 +6,24 @@ import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
-import java.util.Scanner;
+import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.fxml.*;
+import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class AccountBookController implements Initializable {
 
     private final String path = "./src/accountbook/file/";
-    private final double startBalance = 50000;
-    private double balance = startBalance;
+    private final String imgPath = "image/profile.png";
+    private double startBalance = 0;
+    private double balance = 0;
 
     private String date;
     private String type;
@@ -42,7 +38,7 @@ public class AccountBookController implements Initializable {
     private int monthchanged;
 
     @FXML
-    private Label lblSBalance, lblNBalance;
+    private Label lblSBalance, lblNBalance, lblName;
 
     @FXML
     private DatePicker datePicker;
@@ -64,6 +60,9 @@ public class AccountBookController implements Initializable {
 
     @FXML
     private TableView tvOutCome, tvInCome, tvMonth;
+
+    @FXML
+    private ImageView imgProfile;
 
     @FXML
     private TableColumn tcONo, tcOCtg, tcODesc, tcOMethod, tcOAmt, tcINo, tcICtg, tcIDesc, tcIMethod, tcIAmt,
@@ -103,13 +102,13 @@ public class AccountBookController implements Initializable {
             amt = Double.parseDouble(txtAmt.getText());
         } catch (Exception e) {
             erroMsg = "Amount field is accepted the only number";
-            check = false; 
+            check = false;
         }
 
         if ("".equals(desc) || "".equals(txtAmt.getText())) {
             erroMsg = "Empty field is not accepted";
             check = false;
-        } else if (!desc.matches("[a-zA-Z0-9]+")) {
+        } else if (!desc.matches("[a-zA-Z0-9 ]+")) {
             erroMsg = "Only letters and numbers are allowed.";
             check = false;
         }
@@ -237,11 +236,14 @@ public class AccountBookController implements Initializable {
             }
 
         }
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/Report.fxml"));
+        Parent reportParent = loader.load();
 
-        Parent reportParent = FXMLLoader.load(getClass().getResource("Report.fxml"));
+        ReportController rController = loader.getController();
+        rController.transferToReport(tvMonth, lblName.getText(), lblSBalance.getText());
+
         Scene reportScene = new Scene(reportParent);
         Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-
         window.setScene(reportScene);
         window.show();
 
@@ -295,12 +297,14 @@ public class AccountBookController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        lblSBalance.setText("" + startBalance);
         datePicker.setValue(LocalDate.now());
         typeList = new ArrayList();
         btnOutcomeAction(new ActionEvent());
         pMethodList = new ArrayList();
         btnCashAction(new ActionEvent());
+
+        Image img = new Image((getClass().getResource(imgPath)).toExternalForm());
+        imgProfile.setImage(img);
 
         try {
             displayDay(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
@@ -503,4 +507,15 @@ public class AccountBookController implements Initializable {
         tvMonth.setItems(olMonth);
     }
 
+    public void transferToAccountBook(String txtName, String txtBalance) {
+        lblName.setText(txtName);
+        lblSBalance.setText(txtBalance);
+        startBalance = Double.parseDouble(txtBalance);
+
+        try {
+            displayDay(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+            displayMonth(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
+        } catch (Exception e) {
+        }
+    }
 }
