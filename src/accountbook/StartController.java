@@ -27,6 +27,9 @@ import javax.imageio.ImageIO;
 
 public class StartController implements Initializable {
 
+    // assumed as file server
+    String imgPath = "D:/image/profile.png";
+
     @FXML
     private Label lblName, lblBalance;
 
@@ -49,14 +52,13 @@ public class StartController implements Initializable {
 
         try {
             BufferedImage bufferedImage = ImageIO.read(file);
-            
-            File outputfile = new File("./src/accountbook/image/profile.png");
+            File outputfile = new File(imgPath);
             ImageIO.write(bufferedImage, "png", outputfile);
-            
+
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
             profileImg.setImage(image);
         } catch (IOException ex) {
-            
+
         }
     }
 
@@ -77,8 +79,13 @@ public class StartController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        Image img = new Image((getClass().getResource("image/profile.png")).toExternalForm());
-        profileImg.setImage(img);
+
+        try {
+            BufferedImage bf = ImageIO.read(new File(imgPath));
+            Image img = SwingFXUtils.toFXImage(bf, null);
+            profileImg.setImage(img);
+        } catch (Exception e) {
+        }
 
         ProfileBind pb = new ProfileBind();
 
@@ -97,7 +104,5 @@ public class StartController implements Initializable {
             }
         });
         lblBalance.textProperty().bind(new SimpleStringProperty("$").concat(pb.balanceProperty()));
-
     }
-
 }

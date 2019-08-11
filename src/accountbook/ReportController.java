@@ -86,14 +86,14 @@ public class ReportController implements Initializable {
         for (int i = 0; i < changedData.size(); i++) {
             Month m = changedData.get(i);
 
-            ExcelData ex = new ExcelData("" + m.getNo(), m.getDate(), m.getCategory(), m.getDesc(), m.getCash(), m.getCard(), m.getBank(), m.getOutcome(), m.getIncome(), m.getBalance());
+            ExcelData ex = new ExcelData("" + m.getNo(), m.getDate(), m.getCategory(), m.getDesc(), m.getCash(), m.getCard(), m.getBank(), m.getExpense(), m.getIncome(), m.getBalance());
             al.add(ex);
 
             date = m.getDate();
             if (m.getIncome() != 0) {
                 type = "Income";
             } else {
-                type = "Outcome";
+                type = "Expense";
             }
             category = m.getCategory();
             desc = m.getDesc();
@@ -107,7 +107,7 @@ public class ReportController implements Initializable {
                 pMethod = "Bank";
                 pMethodDetail = m.getBank();
             }
-            amt = m.getIncome() + m.getOutcome();
+            amt = m.getIncome() + m.getExpense();
 
             str += makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt);
         }

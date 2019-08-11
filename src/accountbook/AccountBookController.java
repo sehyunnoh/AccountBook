@@ -2,6 +2,7 @@ package accountbook;
 
 import accountbook.info.*;
 import accountbook.model.*;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URL;
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.*;
 import javafx.scene.*;
@@ -17,11 +19,13 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import javax.imageio.ImageIO;
 
 public class AccountBookController implements Initializable {
 
     private final String path = "./src/accountbook/file/";
-    private final String imgPath = "image/profile.png";
+    // assumed as filer server
+    private final String imgPath = "D:/image/profile.png";
     private double startBalance = 0;
     private double balance = 0;
 
@@ -59,14 +63,14 @@ public class AccountBookController implements Initializable {
     private RadioButton radioOut, radioCash;
 
     @FXML
-    private TableView tvOutCome, tvInCome, tvMonth;
+    private TableView tvExpense, tvInCome, tvMonth;
 
     @FXML
     private ImageView imgProfile;
 
     @FXML
     private TableColumn tcONo, tcOCtg, tcODesc, tcOMethod, tcOAmt, tcINo, tcICtg, tcIDesc, tcIMethod, tcIAmt,
-            tcMNo, tcMDate, tcMCtg, tcMDesc, tcMCash, tcMCard, tcMBank, tcMIncome, tcMOutcome, tcMBal;
+            tcMNo, tcMDate, tcMCtg, tcMDesc, tcMCash, tcMCard, tcMBank, tcMIncome, tcMExpense, tcMBal;
 
     @FXML
     private void selectedDate(ActionEvent event) throws IOException {
@@ -128,6 +132,7 @@ public class AccountBookController implements Initializable {
             pw.print(makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt));
             pw.close();
 
+            displaySaveAlert();
             refresh();
             displayDay(date);
             displayMonth(date);
@@ -136,7 +141,7 @@ public class AccountBookController implements Initializable {
     }
 
     @FXML
-    private void btnOutcomeAction(ActionEvent event) {
+    private void btnExpenseAction(ActionEvent event) {
         typeList.clear();
         for (OutType o : OutType.values()) {
             typeList.add(o.toString());
@@ -268,7 +273,7 @@ public class AccountBookController implements Initializable {
             if (m.getIncome() != 0) {
                 type = "Income";
             } else {
-                type = "Outcome";
+                type = "Expense";
             }
             category = m.getCategory();
             desc = m.getDesc();
@@ -282,13 +287,14 @@ public class AccountBookController implements Initializable {
                 pMethod = "Bank";
                 pMethodDetail = m.getBank();
             }
-            amt = m.getIncome() + m.getOutcome();
+            amt = m.getIncome() + m.getExpense();
 
             pw.print(makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt));
         }
 
         pw.close();
 
+        displaySaveAlert();
         refresh();
         displayDay(date);
         displayMonth(date);
@@ -299,12 +305,9 @@ public class AccountBookController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         datePicker.setValue(LocalDate.now());
         typeList = new ArrayList();
-        btnOutcomeAction(new ActionEvent());
+        btnExpenseAction(new ActionEvent());
         pMethodList = new ArrayList();
         btnCashAction(new ActionEvent());
-
-        Image img = new Image((getClass().getResource(imgPath)).toExternalForm());
-        imgProfile.setImage(img);
 
         try {
             displayDay(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
@@ -316,7 +319,7 @@ public class AccountBookController implements Initializable {
 
     private void refresh() {
         radioOut.setSelected(true);
-        btnOutcomeAction(new ActionEvent());
+        btnExpenseAction(new ActionEvent());
         txtDesc.setText("");
         radioCash.setSelected(true);
         txtAmt.setText("");
@@ -359,7 +362,7 @@ public class AccountBookController implements Initializable {
 
         if (file.exists()) {
             Scanner scanner = new Scanner(file);
-            ArrayList<Day> alOutcome = new ArrayList();
+            ArrayList<Day> alExpense = new ArrayList();
             ArrayList<Day> alIncome = new ArrayList();
 
             int outNum = 1, inNum = 1;
@@ -380,20 +383,20 @@ public class AccountBookController implements Initializable {
                 pMethodDetail = fld[5];
                 amt = Double.parseDouble(fld[6]);
 
-                if (type.equals("Outcome")) {
-                    alOutcome.add(new Day(outNum++, category, desc, pMethod, amt));
+                if (type.equals("Expense")) {
+                    alExpense.add(new Day(outNum++, category, desc, pMethod, amt));
                 } else {
                     alIncome.add(new Day(inNum++, category, desc, pMethod, amt));
                 }
             }
 
-            ObservableList<Day> olOutcome = FXCollections.observableArrayList(alOutcome);
+            ObservableList<Day> olExpense = FXCollections.observableArrayList(alExpense);
             tcONo.setCellValueFactory(new PropertyValueFactory<Day, Integer>("no"));
             tcOCtg.setCellValueFactory(new PropertyValueFactory<Day, String>("category"));
             tcODesc.setCellValueFactory(new PropertyValueFactory<Day, String>("desc"));
             tcOMethod.setCellValueFactory(new PropertyValueFactory<Day, String>("pMethod"));
             tcOAmt.setCellValueFactory(new PropertyValueFactory<Day, Double>("amt"));
-            tvOutCome.setItems(olOutcome);
+            tvExpense.setItems(olExpense);
 
             ObservableList<Day> olIncome = FXCollections.observableArrayList(alIncome);
             tcINo.setCellValueFactory(new PropertyValueFactory<Day, Integer>("no"));
@@ -458,18 +461,18 @@ public class AccountBookController implements Initializable {
                         break;
                 }
 
-                double outcome = 0;
+                double expense = 0;
                 double income = 0;
 
                 if (type.equals("Income")) {
                     income = amt;
                     balance += amt;
                 } else {
-                    outcome = amt;
+                    expense = amt;
                     balance -= amt;
                 }
 
-                alMonth.add(new Month(monthNo++, date, category, desc, cash, card, bank, outcome, income, balance));
+                alMonth.add(new Month(monthNo++, date, category, desc, cash, card, bank, expense, income, balance));
             }
 
             ObservableList<Month> olMonth = FXCollections.observableArrayList(alMonth);
@@ -480,7 +483,7 @@ public class AccountBookController implements Initializable {
             tcMCash.setCellValueFactory(new PropertyValueFactory<Month, String>("cash"));
             tcMCard.setCellValueFactory(new PropertyValueFactory<Month, String>("card"));
             tcMBank.setCellValueFactory(new PropertyValueFactory<Month, String>("bank"));
-            tcMOutcome.setCellValueFactory(new PropertyValueFactory<Month, Double>("outcome"));
+            tcMExpense.setCellValueFactory(new PropertyValueFactory<Month, Double>("expense"));
             tcMIncome.setCellValueFactory(new PropertyValueFactory<Month, Double>("income"));
             tcMBal.setCellValueFactory(new PropertyValueFactory<Month, Double>("balance"));
 
@@ -500,17 +503,20 @@ public class AccountBookController implements Initializable {
         tcMCash.setCellValueFactory(new PropertyValueFactory<Month, String>("cash"));
         tcMCard.setCellValueFactory(new PropertyValueFactory<Month, String>("card"));
         tcMBank.setCellValueFactory(new PropertyValueFactory<Month, String>("bank"));
-        tcMOutcome.setCellValueFactory(new PropertyValueFactory<Month, Double>("outcome"));
+        tcMExpense.setCellValueFactory(new PropertyValueFactory<Month, Double>("expense"));
         tcMIncome.setCellValueFactory(new PropertyValueFactory<Month, Double>("income"));
         tcMBal.setCellValueFactory(new PropertyValueFactory<Month, Double>("balance"));
 
         tvMonth.setItems(olMonth);
     }
 
-    public void transferToAccountBook(String txtName, String txtBalance) {
+    public void transferToAccountBook(String txtName, String txtBalance) throws IOException {
         lblName.setText(txtName);
         lblSBalance.setText(txtBalance);
         startBalance = Double.parseDouble(txtBalance);
+        BufferedImage bf = ImageIO.read(new File(imgPath));
+        Image img = SwingFXUtils.toFXImage(bf, null);
+        imgProfile.setImage(img);
 
         try {
             displayDay(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
@@ -518,4 +524,11 @@ public class AccountBookController implements Initializable {
         } catch (Exception e) {
         }
     }
+    
+    public void displaySaveAlert(){
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setContentText("Saved!");
+        alert.showAndWait();
+    };
+
 }

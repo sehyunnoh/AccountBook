@@ -74,7 +74,7 @@
                         <Label text="Amount : " GridPane.rowIndex="6" />
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <RadioButton fx:id="radioOut" mnemonicParsing="false" onAction="#btnOutcomeAction" selected="true" text="Expense" toggleGroup="$grpType">
+                                <RadioButton fx:id="radioOut" mnemonicParsing="false" onAction="#btnExpenseAction" selected="true" text="Expense" toggleGroup="$grpType">
                                     <toggleGroup>
                                         <ToggleGroup fx:id="grpType" />
                                     </toggleGroup>
@@ -119,7 +119,7 @@
             <VBox prefHeight="352.0" prefWidth="363.0" BorderPane.alignment="CENTER">
                 <children>
                     <Label prefHeight="18.0" prefWidth="168.0" text="Daily Expense" />
-                    <TableView fx:id="tvOutCome" prefHeight="200.0" prefWidth="200.0">
+                    <TableView fx:id="tvExpense" prefHeight="200.0" prefWidth="200.0">
                         <columns>
                             <TableColumn fx:id="tcONo" prefWidth="47.999998450279236" text="No" />
                             <TableColumn fx:id="tcOCtg" prefWidth="86.40003204345703" text="Category" />
@@ -172,7 +172,7 @@
                             <TableColumn fx:id="tcMCash" prefWidth="57.60003662109375" text="Cash" />
                             <TableColumn fx:id="tcMCard" prefWidth="64.79998779296875" text="Card" />
                             <TableColumn fx:id="tcMBank" prefWidth="68.800048828125" text="Bank" />
-                            <TableColumn fx:id="tcMOutcome" prefWidth="100.00006103515625" text="Expense" />
+                            <TableColumn fx:id="tcMExpense" prefWidth="100.00006103515625" text="Expense" />
                             <TableColumn fx:id="tcMIncome" prefWidth="96.800048828125" text="Income" />
                             <TableColumn fx:id="tcMBal" prefWidth="124.79998779296875" text="Balance" />
                         </columns>

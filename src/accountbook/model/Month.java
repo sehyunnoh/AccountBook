@@ -13,11 +13,11 @@ public class Month {
     private SimpleStringProperty cash;
     private SimpleStringProperty card;
     private SimpleStringProperty bank;
-    private SimpleDoubleProperty outcome;
+    private SimpleDoubleProperty expense;
     private SimpleDoubleProperty income;
     private SimpleDoubleProperty balance;
 
-    public Month(int no, String date, String category, String desc, String cash, String card, String bank, double outcome, double income, double balance) {
+    public Month(int no, String date, String category, String desc, String cash, String card, String bank, double expense, double income, double balance) {
         this.no = new SimpleIntegerProperty(no);
         this.date = new SimpleStringProperty(date);
         this.category = new SimpleStringProperty(category);
@@ -25,7 +25,7 @@ public class Month {
         this.cash = new SimpleStringProperty(cash);
         this.bank = new SimpleStringProperty(bank);
         this.card = new SimpleStringProperty(card);
-        this.outcome = new SimpleDoubleProperty(outcome);
+        this.expense = new SimpleDoubleProperty(expense);
         this.income = new SimpleDoubleProperty(income);
         this.balance = new SimpleDoubleProperty(balance);
     }
@@ -69,8 +69,8 @@ public class Month {
     public void setCash(String cash) {
         this.cash.set(cash);
     }
-    
-     public String getCard() {
+
+    public String getCard() {
         return card.get();
     }
 
@@ -86,14 +86,12 @@ public class Month {
         this.bank.set(bank);
     }
 
-   
-
-    public double getOutcome() {
-        return outcome.get();
+    public double getExpense() {
+        return expense.get();
     }
 
-    public void setOutcome(double outcome) {
-        this.outcome.set(outcome);
+    public void setExpense(double expense) {
+        this.expense.set(expense);
     }
 
     public double getIncome() {
