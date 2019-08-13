@@ -8,6 +8,9 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -73,8 +76,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * Daily, monthly result updated when selected
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void selectedDate(ActionEvent event) throws IOException {
@@ -84,8 +88,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * today result updated when selected
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnToday(ActionEvent event) throws IOException {
@@ -96,7 +101,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * clear button
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnInfoRefresh(ActionEvent event) {
@@ -105,8 +111,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * save the filled daily information
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnInfoSave(ActionEvent event) throws IOException {
@@ -160,7 +167,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * make expense combo box
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnExpenseAction(ActionEvent event) {
@@ -173,7 +181,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * make income combo box
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnIncomeAction(ActionEvent event) {
@@ -186,7 +195,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * make cash combo box
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnCashAction(ActionEvent event) {
@@ -197,7 +207,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * make back combo box
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnBankAction(ActionEvent event) {
@@ -210,7 +221,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * make card combo box
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnCardAction(ActionEvent event) {
@@ -223,8 +235,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly screen refresh
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnMRefresh(ActionEvent event) throws IOException {
@@ -234,8 +247,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly screen search button
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnMSearch(ActionEvent event) throws IOException {
@@ -254,7 +268,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly screen one row delete button
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnMDelete(ActionEvent event) {
@@ -264,7 +279,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly screen delete all rows
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnMDeleteAll(ActionEvent event) {
@@ -274,7 +290,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly screen move to previous row
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnMPrev(ActionEvent event) {
@@ -283,7 +300,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * monthly move to next row
-     * @param event 
+     *
+     * @param event
      */
     @FXML
     private void btnMNext(ActionEvent event) {
@@ -291,10 +309,11 @@ public class AccountBookController implements Initializable {
     }
 
     /**
-     * move to report screen 
-     * if something to changed, ask whether it need to save
+     * move to report screen if something to changed, ask whether it need to
+     * save
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnMReport(ActionEvent event) throws IOException {
@@ -339,8 +358,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * save to file changed contents
+     *
      * @param event
-     * @throws IOException 
+     * @throws IOException
      */
     @FXML
     private void btnMSave(ActionEvent event) throws IOException {
@@ -391,8 +411,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * when screen open clear the input fields and display daily, monthly screen
+     *
      * @param url
-     * @param rb 
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -407,7 +428,6 @@ public class AccountBookController implements Initializable {
             displayMonth(LocalDate.now().format(DateTimeFormatter.BASIC_ISO_DATE));
         } catch (Exception e) {
         }
-
     }
 
     /**
@@ -424,7 +444,8 @@ public class AccountBookController implements Initializable {
 
     /**
      * display type combo box from the data
-     * @param al 
+     *
+     * @param al
      */
     private void typeCombo(ArrayList al) {
         ObservableList<String> olType = FXCollections.observableArrayList(al);
@@ -434,8 +455,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * display payment method combo box from the data
+     *
      * @param al
-     * @param b 
+     * @param b
      */
     private void paymentMethodCombo(ArrayList al, boolean b) {
         ObservableList<String> olPayMethod = FXCollections.observableArrayList(al);
@@ -446,6 +468,7 @@ public class AccountBookController implements Initializable {
 
     /**
      * make row from multiple strings
+     *
      * @param str
      * @return
      */
@@ -459,8 +482,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * make file path from the date
+     *
      * @param date
-     * @return 
+     * @return
      */
     private String makePath(String date) {
         return path + date.substring(0, 6) + ".csv";
@@ -468,8 +492,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * the method display daily screen
+     *
      * @param day
-     * @throws IOException 
+     * @throws IOException
      */
     private void displayDay(String day) throws IOException {
         File file = new File(makePath(day));
@@ -524,8 +549,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * the method display monthly screen from the date
+     *
      * @param day
-     * @throws IOException 
+     * @throws IOException
      */
     public void displayMonth(String day) throws IOException {
         balance = startBalance;
@@ -614,8 +640,9 @@ public class AccountBookController implements Initializable {
 
     /**
      * the method display monthly screen from the data
+     *
      * @param al
-     * @throws IOException 
+     * @throws IOException
      */
     public void displayMonthFromArray(ArrayList<Month> al) throws IOException {
 
@@ -636,9 +663,10 @@ public class AccountBookController implements Initializable {
 
     /**
      * Method called when invoking accountbook screen
+     *
      * @param txtName
      * @param txtBalance
-     * @throws IOException 
+     * @throws IOException
      */
     public void transferToAccountBook(String txtName, String txtBalance) throws IOException {
         lblName.setText(txtName);

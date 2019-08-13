@@ -74,10 +74,10 @@
                     </rowConstraints>
                     <children>
                         <Label prefHeight="18.0" prefWidth="127.0" text=" Date :" />
-                        <Label prefHeight="18.0" prefWidth="111.0" text=" Type: " GridPane.rowIndex="1" />
-                        <Label prefHeight="18.0" prefWidth="114.0" text=" Category: " GridPane.rowIndex="2" />
+                        <Label prefHeight="18.0" prefWidth="111.0" text=" Type : " GridPane.rowIndex="1" />
+                        <Label prefHeight="18.0" prefWidth="114.0" text=" Category :" GridPane.rowIndex="2" />
                         <Label prefHeight="18.0" prefWidth="123.0" text=" Description : " GridPane.rowIndex="3" />
-                        <Label prefHeight="18.0" prefWidth="136.0" text=" Payment method: " GridPane.rowIndex="4" GridPane.rowSpan="2" />
+                        <Label prefHeight="18.0" prefWidth="136.0" text=" Pay method :" GridPane.rowIndex="4" />
                         <Label prefHeight="18.0" prefWidth="127.0" text=" Amount : " GridPane.rowIndex="6" />
                         <HBox prefHeight="4.0" prefWidth="255.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
