@@ -28,7 +28,6 @@ import javax.imageio.ImageIO;
 
 public class StartController implements Initializable {
 
-    // assumed as file server
     String imgPath = "D:/image/profile.png";
     String name = "";
     double balance = 0;
@@ -42,6 +41,10 @@ public class StartController implements Initializable {
     @FXML
     private ImageView profileImg;
 
+    /**
+     * Select and replace image
+     * @param event 
+     */
     @FXML
     private void btnImgChange(ActionEvent event) {
 
@@ -60,14 +63,19 @@ public class StartController implements Initializable {
 
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
             profileImg.setImage(image);
-        } catch (IOException ex) {
-
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
         }
     }
 
+    /**
+     * Button to move to next screen
+     * Check the input value for consistency and pass over the required value.
+     * @param event
+     * @throws IOException 
+     */
     @FXML
     private void btnStart(ActionEvent event) throws IOException {
-
         boolean check = true;
         String errorMsg = "";
         name = txtName.getText();
@@ -110,6 +118,11 @@ public class StartController implements Initializable {
         }
     }
 
+    /**
+     * Show image and connect bind property
+     * @param url
+     * @param rb 
+     */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 

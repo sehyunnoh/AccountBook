@@ -47,6 +47,12 @@ public class ReportController implements Initializable {
     @FXML
     private Label lblExpense;
 
+    /**
+     * Back button method move to previous screen
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void btnBack(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountBook.fxml"));
@@ -61,6 +67,12 @@ public class ReportController implements Initializable {
         window.show();
     }
 
+    /**
+     * save to excel
+     *
+     * @param event
+     * @throws IOException
+     */
     @FXML
     private void btnExcel(ActionEvent event) throws IOException {
         Excel excel = new Excel();
@@ -72,6 +84,13 @@ public class ReportController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
     }
 
+    /**
+     * Method called when invoking report screen
+     *
+     * @param tvMonth
+     * @param name
+     * @param sBalance
+     */
     public void transferToReport(TableView tvMonth, String name, String sBalance) {
         this.name = name;
         this.sBalance = sBalance;
@@ -79,6 +98,11 @@ public class ReportController implements Initializable {
 
     }
 
+    /**
+     * the method that serves as a pie chart display.
+     *
+     * @param tvMonth
+     */
     public void displayData(TableView tvMonth) {
         ObservableList<Month> changedData = tvMonth.getItems();
 
@@ -119,10 +143,10 @@ public class ReportController implements Initializable {
         }
 
         ObservableList<PieChart.Data> pData = FXCollections.observableArrayList();
-        
-        String tmpEx = String.format("%.2f",expense / (expense + income) * 100);
+
+        String tmpEx = String.format("%.2f", expense / (expense + income) * 100);
         double expenseRate = Double.parseDouble(tmpEx);
-        double incomeRate = 100-expenseRate;
+        double incomeRate = 100 - expenseRate;
 
         pData.add(new PieChart.Data("Expense", expenseRate));
         pData.add(new PieChart.Data("Income", incomeRate));
@@ -146,6 +170,12 @@ public class ReportController implements Initializable {
         }
     }
 
+    /**
+     * the method to make row
+     *
+     * @param str
+     * @return
+     */
     private String makeRow(String... str) {
         String result = "";
         for (int i = 0; i < str.length - 1; i++) {
