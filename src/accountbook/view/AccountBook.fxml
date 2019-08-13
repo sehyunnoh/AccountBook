@@ -17,12 +17,13 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <VBox prefHeight="676.0" prefWidth="945.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="accountbook.AccountBookController">
     <BorderPane prefHeight="391.0" prefWidth="533.0">
         <left>
             <VBox prefHeight="352.0" prefWidth="218.0" BorderPane.alignment="CENTER">
-                <ImageView fx:id="imgProfile" fitHeight="253.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="imgProfile" fitHeight="270.0" fitWidth="217.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../image/profile.png" />
                     </image>
@@ -38,23 +39,29 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label prefHeight="18.0" prefWidth="106.0" text="start balance: " GridPane.rowIndex="1" />
-                  <Label prefHeight="18.0" prefWidth="106.0" text="now balance: " GridPane.rowIndex="2" />
-                  <Label fx:id="lblSBalance" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                  <Label fx:id="lblNBalance" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                  <Label text="Name:" />
-                  <Label fx:id="lblName" text="Label" GridPane.columnIndex="1" />
+                  <Label prefHeight="18.0" prefWidth="106.0" text="   Start balance: " GridPane.rowIndex="1" />
+                  <Label prefHeight="18.0" prefWidth="106.0" text="   Now balance: " GridPane.rowIndex="2" />
+                  <Label fx:id="lblSBalance" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="122.0" text="   Label " GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label fx:id="lblNBalance" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="188.0" text="   Label " GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label prefHeight="18.0" prefWidth="110.0" text="   Name:" />
+                  <Label fx:id="lblName" alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="133.0" text="   Label " GridPane.columnIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font></Label>
                </children>
             </GridPane>
             </VBox>
         </left>
         <center>
             <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-                <Label prefHeight="38.0" prefWidth="338.0" text="Information" />
+                <Label prefHeight="38.0" prefWidth="338.0" text="Information">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font></Label>
                 <GridPane prefHeight="297.0" prefWidth="362.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.20001220703125" minWidth="10.0" prefWidth="109.60003967285157" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="463.39996337890625" minWidth="10.0" prefWidth="309.59996032714844" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="284.20001220703125" minWidth="10.0" prefWidth="109.60003662109375" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="463.39996337890625" minWidth="10.0" prefWidth="255.19996337890626" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -66,50 +73,50 @@
                         <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label prefHeight="18.0" prefWidth="67.0" text="Date :" />
-                        <Label text="Type: " GridPane.rowIndex="1" />
-                        <Label text="Category: " GridPane.rowIndex="2" />
-                        <Label text="Description : " GridPane.rowIndex="3" />
-                        <Label text="Payment method: " GridPane.rowIndex="4" GridPane.rowSpan="2" />
-                        <Label text="Amount : " GridPane.rowIndex="6" />
-                        <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label prefHeight="18.0" prefWidth="127.0" text=" Date :" />
+                        <Label prefHeight="18.0" prefWidth="111.0" text=" Type: " GridPane.rowIndex="1" />
+                        <Label prefHeight="18.0" prefWidth="114.0" text=" Category: " GridPane.rowIndex="2" />
+                        <Label prefHeight="18.0" prefWidth="123.0" text=" Description : " GridPane.rowIndex="3" />
+                        <Label prefHeight="18.0" prefWidth="136.0" text=" Payment method: " GridPane.rowIndex="4" GridPane.rowSpan="2" />
+                        <Label prefHeight="18.0" prefWidth="127.0" text=" Amount : " GridPane.rowIndex="6" />
+                        <HBox prefHeight="4.0" prefWidth="255.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                             <children>
-                                <RadioButton fx:id="radioOut" mnemonicParsing="false" onAction="#btnExpenseAction" selected="true" text="Expense" toggleGroup="$grpType">
+                                <RadioButton fx:id="radioOut" mnemonicParsing="false" onAction="#btnExpenseAction" prefHeight="18.0" prefWidth="91.0" selected="true" text="Expense" toggleGroup="$grpType">
                                     <toggleGroup>
                                         <ToggleGroup fx:id="grpType" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioIn" mnemonicParsing="false" onAction="#btnIncomeAction" text="Income" toggleGroup="$grpType" />
+                                <RadioButton fx:id="radioIn" mnemonicParsing="false" onAction="#btnIncomeAction" prefHeight="18.0" prefWidth="82.0" text="Income" toggleGroup="$grpType" />
                             </children>
                         </HBox>
-                        <ComboBox fx:id="cmbCategory" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                        <TextField fx:id="txtDesc" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                        <ComboBox fx:id="cmbCategory" prefHeight="26.0" prefWidth="199.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                        <TextField fx:id="txtDesc" prefHeight="26.0" prefWidth="229.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                             <children>
-                                <RadioButton fx:id="radioCash" mnemonicParsing="false" onAction="#btnCashAction" selected="true" text="Cash">
+                                <RadioButton fx:id="radioCash" mnemonicParsing="false" onAction="#btnCashAction" prefHeight="18.0" prefWidth="72.0" selected="true" text="Cash">
                                     <toggleGroup>
                                         <ToggleGroup fx:id="grpPayMethod" />
                                     </toggleGroup>
                                 </RadioButton>
-                                <RadioButton fx:id="radioCard" mnemonicParsing="false" onAction="#btnCardAction" text="Card" toggleGroup="$grpPayMethod" />
+                                <RadioButton fx:id="radioCard" mnemonicParsing="false" onAction="#btnCardAction" prefHeight="18.0" prefWidth="73.0" text="Card" toggleGroup="$grpPayMethod" />
                                 <RadioButton fx:id="radioBank" mnemonicParsing="false" onAction="#btnBankAction" text="Bank" toggleGroup="$grpPayMethod" />
                             </children>
                         </HBox>
                         
-                        <TextField fx:id="txtAmt" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-                        <ComboBox fx:id="cmbPayMethod" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                        <TextField fx:id="txtAmt" prefHeight="26.0" prefWidth="134.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                        <ComboBox fx:id="cmbPayMethod" prefHeight="26.0" prefWidth="202.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                         <HBox prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
                             <children>
-                                <DatePicker fx:id="datePicker" onAction="#selectedDate" />
+                                <DatePicker fx:id="datePicker" onAction="#selectedDate" prefHeight="26.0" prefWidth="149.0" />
                                 <Button mnemonicParsing="true" onAction="#btnToday" text="_Today" />
                             </children>
                         </HBox>
                     </children>
                 </GridPane>
-                <HBox prefHeight="100.0" prefWidth="200.0">
+                <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                     <children>
-                        <Button mnemonicParsing="false" onAction="#btnInfoRefresh" text="Clear" />
-                        <Button mnemonicParsing="false" onAction="#btnInfoSave" text="Save" />
+                        <Button mnemonicParsing="false" onAction="#btnInfoRefresh" prefHeight="26.0" prefWidth="68.0" text="Clear" />
+                        <Button mnemonicParsing="false" onAction="#btnInfoSave" prefHeight="26.0" prefWidth="66.0" text="Save" />
                     </children>
                 </HBox>
 
@@ -118,7 +125,10 @@
         <right>
             <VBox prefHeight="352.0" prefWidth="363.0" BorderPane.alignment="CENTER">
                 <children>
-                    <Label prefHeight="18.0" prefWidth="168.0" text="Daily Expense" />
+                    <Label prefHeight="18.0" prefWidth="168.0" text=" Daily Expense">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
                     <TableView fx:id="tvExpense" prefHeight="200.0" prefWidth="200.0">
                         <columns>
                             <TableColumn fx:id="tcONo" prefWidth="47.999998450279236" text="No" />
@@ -128,7 +138,10 @@
                             <TableColumn fx:id="tcOAmt" prefWidth="91.9998779296875" text="Amount" />
                         </columns>
                     </TableView>
-                    <Label prefHeight="18.0" prefWidth="165.0" text="Daily Income" />
+                    <Label prefHeight="18.0" prefWidth="165.0" text=" Daily Income">
+                  <font>
+                     <Font name="System Bold" size="14.0" />
+                  </font></Label>
                     <TableView fx:id="tvInCome" prefHeight="200.0" prefWidth="200.0">
                         <columns>
                             <TableColumn fx:id="tcINo" prefWidth="47.999998450279236" text="No" />
@@ -149,21 +162,24 @@
         <center>
             <VBox prefHeight="274.0" prefWidth="846.0" BorderPane.alignment="CENTER">
                 <children>
-                    <HBox prefHeight="32.0" prefWidth="675.0">
+                    <HBox prefHeight="6.0" prefWidth="946.0">
                         <children>
-                            <Label prefHeight="18.0" prefWidth="227.0" text="Monthly Transaction History" />
+                            <Label prefHeight="26.0" prefWidth="209.0" text="  Monthly Transaction History">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font></Label>
                             <TextField fx:id="txtMdesc" promptText="Description" />
-                            <Button defaultButton="true" mnemonicParsing="true" onAction="#btnMSearch" text="Searc_h" />
-                            <Button mnemonicParsing="true" onAction="#btnMRefresh" text="Re_fresh" />
-                            <Button mnemonicParsing="true" onAction="#btnMDelete" text="_Delete" />
-                            <Button mnemonicParsing="true" onAction="#btnMDeleteAll" text="Delete _All" />
-                            <Button mnemonicParsing="true" onAction="#btnMPrev" text="_Prev" />
-                            <Button mnemonicParsing="true" onAction="#btnMNext" text="_Next" />
-                            <Button mnemonicParsing="true" onAction="#btnMReport" text="_Report" />
-                            <Button mnemonicParsing="true" onAction="#btnMSave" text="_Save" />
+                            <Button defaultButton="true" mnemonicParsing="true" onAction="#btnMSearch" prefHeight="26.0" prefWidth="70.0" text="Searc_h" />
+                            <Button mnemonicParsing="true" onAction="#btnMRefresh" prefHeight="26.0" prefWidth="79.0" text="Re_fresh" />
+                            <Button mnemonicParsing="true" onAction="#btnMDelete" prefHeight="26.0" prefWidth="63.0" text="_Delete" />
+                            <Button mnemonicParsing="true" onAction="#btnMDeleteAll" prefHeight="26.0" prefWidth="94.0" text="Delete _All" />
+                            <Button mnemonicParsing="true" onAction="#btnMPrev" prefHeight="26.0" prefWidth="52.0" text="_Prev" />
+                            <Button mnemonicParsing="true" onAction="#btnMNext" prefHeight="26.0" prefWidth="56.0" text="_Next" />
+                            <Button mnemonicParsing="true" onAction="#btnMReport" prefHeight="26.0" prefWidth="70.0" text="_Report" />
+                            <Button mnemonicParsing="true" onAction="#btnMSave" prefHeight="26.0" prefWidth="53.0" text="_Save" />
                         </children>
                     </HBox>
-                    <TableView fx:id="tvMonth" prefHeight="251.0" prefWidth="946.0">
+                    <TableView fx:id="tvMonth" prefHeight="270.0" prefWidth="946.0">
                         <columns>
                             <TableColumn fx:id="tcMNo" prefWidth="75.0" text="No" />
                             <TableColumn fx:id="tcMDate" prefWidth="75.0" text="Date" />

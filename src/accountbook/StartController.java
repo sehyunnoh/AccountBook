@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.*;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -29,6 +30,8 @@ public class StartController implements Initializable {
 
     // assumed as file server
     String imgPath = "D:/image/profile.png";
+    String name = "";
+    double balance = 0;
 
     @FXML
     private Label lblName, lblBalance;
@@ -65,16 +68,46 @@ public class StartController implements Initializable {
     @FXML
     private void btnStart(ActionEvent event) throws IOException {
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountBook.fxml"));
-        Parent reportParent = loader.load();
+        boolean check = true;
+        String errorMsg = "";
+        name = txtName.getText();
 
-        AccountBookController aController = loader.getController();
-        aController.transferToAccountBook(txtName.getText(), txtBalance.getText());
+        try {
+            balance = Double.parseDouble(txtBalance.getText());
+        } catch (Exception e) {
+            errorMsg = "balance field is accepted the only number";
+            check = false;
+        }
 
-        Scene reportScene = new Scene(reportParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(reportScene);
-        window.show();
+        if ("".equals(name) || "".equals(txtBalance.getText())) {
+            errorMsg = "Empty field is not accepted";
+            check = false;
+        } else if (!name.matches("[a-zA-Z ]+")) {
+            errorMsg = "The name field is only letters are allowed";
+            check = false;
+        } else if (name.length() > 10) {
+            errorMsg = "The name field is allowed up to 10 letters";
+            check = false;
+        }
+
+        if (!check) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Data Entry Error");
+            alert.setHeaderText("Invalid Value Entered");
+            alert.setContentText(errorMsg);
+            alert.showAndWait();
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountBook.fxml"));
+            Parent reportParent = loader.load();
+
+            AccountBookController aController = loader.getController();
+            aController.transferToAccountBook(txtName.getText(), txtBalance.getText());
+
+            Scene reportScene = new Scene(reportParent);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(reportScene);
+            window.show();
+        }
     }
 
     @Override
@@ -103,6 +136,6 @@ public class StartController implements Initializable {
                 pb.setBalance(Double.parseDouble(txtBalance.getText()));
             }
         });
-        lblBalance.textProperty().bind(new SimpleStringProperty("$").concat(pb.balanceProperty()));
+        lblBalance.textProperty().bind(new SimpleStringProperty("Your balance $").concat(pb.balanceProperty()));
     }
 }

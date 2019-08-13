@@ -1,5 +1,5 @@
 package accountbook.info;
 
 public enum OutType {
-    Transportation, GroceryStore, Exercise, Health, Education, Telecommunication, House
+    Saving, FoodExpense, Transportation, InsuranceFee, Communication, HouseRent, Allowance, LeisureCost, Other
 }

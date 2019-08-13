@@ -9,16 +9,22 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class ReportController implements Initializable {
@@ -36,17 +42,13 @@ public class ReportController implements Initializable {
     private String sBalance;
 
     @FXML
-    private Label lblData;
+    private PieChart pieReport;
+
+    @FXML
+    private Label lblExpense;
 
     @FXML
     private void btnBack(ActionEvent event) throws IOException {
-//        Parent reportParent = FXMLLoader.load(getClass().getResource("view/AccountBook.fxml"));
-//        Scene reportScene = new Scene(reportParent);
-//        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-//
-//        window.setScene(reportScene);
-//        window.show();
-        
         FXMLLoader loader = new FXMLLoader(getClass().getResource("view/AccountBook.fxml"));
         Parent reportParent = loader.load();
 
@@ -68,13 +70,13 @@ public class ReportController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        System.out.println("Report");
     }
 
     public void transferToReport(TableView tvMonth, String name, String sBalance) {
         this.name = name;
         this.sBalance = sBalance;
         displayData(tvMonth);
+
     }
 
     public void displayData(TableView tvMonth) {
@@ -83,6 +85,8 @@ public class ReportController implements Initializable {
         al = new ArrayList<>();
         al.add(new ExcelData());
         String str = "";
+        double expense = 0;
+        double income = 0;
         for (int i = 0; i < changedData.size(); i++) {
             Month m = changedData.get(i);
 
@@ -92,8 +96,10 @@ public class ReportController implements Initializable {
             date = m.getDate();
             if (m.getIncome() != 0) {
                 type = "Income";
+                income += m.getIncome();
             } else {
                 type = "Expense";
+                expense += m.getExpense();
             }
             category = m.getCategory();
             desc = m.getDesc();
@@ -112,8 +118,32 @@ public class ReportController implements Initializable {
             str += makeRow(date, type, category, desc, pMethod, pMethodDetail, "" + amt);
         }
 
-        lblData.setText(str);
+        ObservableList<PieChart.Data> pData = FXCollections.observableArrayList();
+        
+        String tmpEx = String.format("%.2f",expense / (expense + income) * 100);
+        double expenseRate = Double.parseDouble(tmpEx);
+        double incomeRate = 100-expenseRate;
 
+        pData.add(new PieChart.Data("Expense", expenseRate));
+        pData.add(new PieChart.Data("Income", incomeRate));
+        pieReport.setTitle("Monthly Report");
+        pieReport.setLegendSide(Side.LEFT);
+        pieReport.setData(pData);
+
+        lblExpense.setTextFill(Color.WHITE);
+        lblExpense.setStyle("-fx-font: 24 arial;");
+
+        for (final PieChart.Data data : pieReport.getData()) {
+            data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED,
+                    new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent e) {
+                    lblExpense.setTranslateX(e.getSceneX());
+                    lblExpense.setTranslateY(e.getSceneY());
+                    lblExpense.setText(String.valueOf(data.getPieValue()) + "%");
+                }
+            });
+        }
     }
 
     private String makeRow(String... str) {

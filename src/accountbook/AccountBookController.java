@@ -185,6 +185,7 @@ public class AccountBookController implements Initializable {
 
     @FXML
     private void btnMRefresh(ActionEvent event) throws IOException {
+        txtMdesc.setText("");
         displayMonth(date);
     }
 
@@ -231,26 +232,38 @@ public class AccountBookController implements Initializable {
         if (monthchanged > 0) {
 
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION,
-                    "Do you want to save your changes?", ButtonType.YES, ButtonType.NO);
+                    "Do you want to save the changes before moving to the next page?", ButtonType.YES, ButtonType.NO);
             alert.setTitle("Alert");
             alert.setHeaderText(null);
             Optional<ButtonType> result = alert.showAndWait();
 
             if (result.get() == ButtonType.YES) {
                 btnMSave(new ActionEvent());
+
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("view/Report.fxml"));
+                Parent reportParent = loader.load();
+
+                ReportController rController = loader.getController();
+                rController.transferToReport(tvMonth, lblName.getText(), lblSBalance.getText());
+
+                Scene reportScene = new Scene(reportParent);
+                Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                window.setScene(reportScene);
+                window.show();
             }
 
+        } else {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("view/Report.fxml"));
+            Parent reportParent = loader.load();
+
+            ReportController rController = loader.getController();
+            rController.transferToReport(tvMonth, lblName.getText(), lblSBalance.getText());
+
+            Scene reportScene = new Scene(reportParent);
+            Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            window.setScene(reportScene);
+            window.show();
         }
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("view/Report.fxml"));
-        Parent reportParent = loader.load();
-
-        ReportController rController = loader.getController();
-        rController.transferToReport(tvMonth, lblName.getText(), lblSBalance.getText());
-
-        Scene reportScene = new Scene(reportParent);
-        Stage window = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        window.setScene(reportScene);
-        window.show();
 
     }
 
@@ -524,11 +537,12 @@ public class AccountBookController implements Initializable {
         } catch (Exception e) {
         }
     }
-    
-    public void displaySaveAlert(){
+
+    public void displaySaveAlert() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setContentText("Saved!");
         alert.showAndWait();
-    };
+    }
+;
 
 }

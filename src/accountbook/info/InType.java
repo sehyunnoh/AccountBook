@@ -1,5 +1,5 @@
 package accountbook.info;
 
 public enum InType {
-    Salary, Stocks, Rental, Lotto
+    Salary, Stocks, Rental, Lottery, Subsidy, Other
 }
